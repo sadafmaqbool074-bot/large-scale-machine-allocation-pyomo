@@ -1,78 +1,83 @@
-# Large-Scale Machine Allocation Using Pyomo
+# Machine Allocation Optimization (Pyomo)
 
-## Overview
-
-This project develops a Linear Programming model for production
-planning and machine allocation using Python, Pyomo, and GLPK.
-
-The company produces 12 industrial products using four limited
-production resources:
-
-- CNC
-- Assembly
-- Testing
-- Packaging
-
-The objective is to maximise total production profit while satisfying
-machine capacity and market demand constraints.
+A linear programming model that determines the optimal production mix for a manufacturing company producing 12 industrial products across four shared production resources — CNC, Assembly, Testing, and Packaging — in order to maximize total profit subject to machine capacity and market demand limits.
 
 ## Problem
 
-The model determines the optimal production quantity for each product.
+Decide how many units of each product to produce, x_p, to maximize profit without exceeding machine-hour capacities or exceeding market demand for any product.
 
-## Objective
+**Decision variable**
+x_p = number of units of product p produced
 
-Maximise:
+**Objective**
+maximize Z = Σ_p Profit_p · x_p
 
-Total Profit = Sum of Product Profit × Production Quantity
+**Constraints**
+- Machine capacity, for each machine m: Σ_p Hours_{p,m} · x_p ≤ Capacity_m
+- Demand: x_p ≤ Demand_p
+- Non-negativity: x_p ≥ 0
 
-## Constraints
+Machine capacities (hours):
 
-The model includes:
+| Machine    | Capacity |
+|------------|---------:|
+| CNC        | 25,000   |
+| Assembly   | 20,000   |
+| Testing    | 12,000   |
+| Packaging  |  8,000   |
 
-1. CNC capacity
-2. Assembly capacity
-3. Testing capacity
-4. Packaging capacity
-5. Maximum market demand
-6. Non-negative production quantities
+## Project structure
 
-## Methodology
+.
+├── machine_allocation.ipynb   # Main notebook: model, solve, results, plots
+├── Data .xlsx                 # Input data (products, profit, hours/unit, demand) — not included, see below
+├── requirements.txt
+└── README.md
 
-The model was implemented using:
+## Input data
 
-- Python
-- Pyomo
-- GLPK
-- Pandas
-- Matplotlib
+The notebook reads a file named `Data .xlsx` in the same directory, with one row per product and the following columns:
+- Product
+- Profit (€ / Unit)
+- CNC Hours / Unit
+- Assembly Hours / Unit
+- Testing Hours / Unit
+- Packaging Hours / Unit
+- Maximum Demand
 
-## Decision Variables
+Add your own `Data .xlsx` file to the repo root before running the notebook.
 
-x[p] = quantity of product p produced.
+## Setup
 
-## Results
+pip install -r requirements.txt
 
-The model provides:
+The notebook uses the GLPK solver via Pyomo. Install it with:
 
-- Optimal production quantities
-- Maximum total profit
-- Machine hours used
-- Unused machine capacity
-- Machine utilisation
-- Bottleneck identification
+# Debian/Ubuntu
+sudo apt-get install glpk-utils
 
-## Visualisation
+# macOS (Homebrew)
+brew install glpk
 
-The project includes visualisations of optimal production
-and machine utilisation.
+# Conda
+conda install -c conda-forge glpk
 
-## Key OR Concepts
+## Usage
 
-- Linear Programming
-- Production Planning
-- Product Mix
-- Resource Allocation
-- Capacity Constraints
-- Bottleneck Analysis
-- Optimisation
+Open and run `machine_allocation.ipynb` top to bottom. It will:
+1. Load product data from `Data .xlsx`
+2. Build the Pyomo model (sets, parameters, variables, objective, constraints)
+3. Solve with GLPK
+4. Report optimal production, max profit, machine hours used/unused/utilization, and the bottleneck machine
+5. Generate bar charts of production quantities and machine utilization
+
+## Tools
+
+- Pyomo — optimization modeling
+- GLPK — LP solver
+- pandas — data handling
+- matplotlib — visualization
+
+## License
+
+MIT (or your preferred license — update this section).
