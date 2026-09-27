@@ -25,15 +25,6 @@ Machine capacities (hours):
 | Assembly   | 20,000   |
 | Testing    | 12,000   |
 | Packaging  |  8,000   |
-
-## Project structure
-
-.
-├── machine_allocation.ipynb   # Main notebook: model, solve, results, plots
-├── Data .xlsx                 # Input data (products, profit, hours/unit, demand) — not included, see below
-├── requirements.txt
-└── README.md
-
 ## Input data
 
 The notebook reads a file named `Data .xlsx` in the same directory, with one row per product and the following columns:
@@ -47,11 +38,7 @@ The notebook reads a file named `Data .xlsx` in the same directory, with one row
 
 Add your own `Data .xlsx` file to the repo root before running the notebook.
 
-## Setup
 
-pip install -r requirements.txt
-
-The notebook uses the GLPK solver via Pyomo. Install it with:
 
 # Debian/Ubuntu
 sudo apt-get install glpk-utils
@@ -63,7 +50,6 @@ brew install glpk
 conda install -c conda-forge glpk
 
 ## Usage
-
 Open and run `machine_allocation.ipynb` top to bottom. It will:
 1. Load product data from `Data .xlsx`
 2. Build the Pyomo model (sets, parameters, variables, objective, constraints)
@@ -78,6 +64,4 @@ Open and run `machine_allocation.ipynb` top to bottom. It will:
 - pandas — data handling
 - matplotlib — visualization
 
-## License
 
-MIT (or your preferred license — update this section).
